@@ -1,2 +1,2 @@
 # ZombieTravel
-The game about zoombe and travel/
+The game about zombeis and travel.
