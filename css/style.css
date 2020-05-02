@@ -1,0 +1,122 @@
+@font-face{
+    font-family: Calibri;
+    src: url(../fonts/calibri.ttf);
+}
+@font-face{
+    font-family: Calibri;
+    font-weight: bold;
+    src: url(../fonts/calibrib.ttf);
+}
+
+body{
+    padding: 0;
+    margin: 0;
+    background: #560abd;
+    font-family: Calibri;    
+    text-shadow: 0 0 5px #000;
+}
+
+.main{
+    position: relative;
+    margin: 0 auto;
+    max-width: 960px;
+    height: 100vh;
+    color:#FFF;
+}
+
+.skins{
+    display: flex;    
+}
+
+.skin{
+    position: relative;
+    flex: 0 0 20%;
+    flex-grow: wrap;
+}
+
+.skin img{
+    width: 100%;
+}
+.middle-contener{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:50px;
+}
+
+.title-game{
+    text-align: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 70px;    
+    margin-bottom:80px;
+    cursor: pointer;
+}
+
+.label-chenge{
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+}
+
+.play{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;   
+    width: 200px;
+    height: 50px;
+    background: rgb(253, 164, 20);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.play:hover{
+    background: rgb(253, 183, 20);    
+}
+
+#select{
+    position: absolute;
+    background: url(../img/select.png) no-repeat;
+    background-size:cover;
+    width: 60px;
+    height: 60px;
+    top:70%;
+    left: 50%;
+    transform: translate(-50%,-30%);
+}
+
+.copyright{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.pashalka{
+    display: none;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 200px;
+    height: 75px;
+    color:#FFF;
+    box-sizing: border-box;
+    padding: 5px;
+    text-align: center;
+}
+
+#game{
+    position: absolute;   
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /* width: auto; */
+    /* max-width: 100%; */
+    /* max-height: 100%; */
+    /* height: auto; */ 
+    /* outline:1px solid #000; */
+}
