@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">   
+    <meta charset="UTF-8"> 
+    <title>Zombie Travel</title>  
     <link rel="stylesheet" href="css/style.css">  
-    <link rel="stylesheet" href="css/preloader.css">      
-    <title>Zombie Travel</title>
+    <link rel="stylesheet" href="css/preloader.css">   
+    <script src="js/jquery-3.4.1.min.js"></script>       
 </head>
-<body>
+<body class="fix-center">
     <div id="preloader">
         <div class="preloader">
             <div class="bigBoll"></div>
@@ -14,8 +15,27 @@
                 <div class="smallBollCenter"></div>
             </div>
         </div>
+    </div>    
+    <div class="content">
+        <canvas id="game" width="1280" height="720"></canvas>
+        <div id="bg-end-pause">
+            <div class="end-pause">                 
+                <div class="panel">                    
+                    <div id="title-panel" class="un-user-select">Pause</div>
+                    <div class="info-game">
+                        <div id="info-hp" class="un-user-select">0</div>
+                        <div id="info-xp" class="un-user-select">0</div>
+                        <div id="info-time" class="un-user-select">0:00</div>
+                    </div>
+                    <div class="controls">
+                        <button class="replay" onclick="replay()"></button>
+                        <button class="continue" onclick="continueGame()"></button>
+                        <button class="home" onclick="toHome()"></button>
+                    </div>  
+                </div>                              
+            </div>  
+        </div>        
     </div>
-    <canvas id="game" width="1280" height="720"></canvas>    
     <script src="js/game.js"></script>
 </body>
 </html>

@@ -1,0 +1,133 @@
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    z-index: 2;
+    transition: 1s all;
+    opacity: 1;
+    visibility: visible;
+
+}
+
+#preloader.done {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.smallBollCenter{
+    position:absolute;
+    border-radius:50%;
+    background:white;
+    width:50%;
+    height:50%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.preloader{
+    position:absolute;
+    width:360px;
+    height:360px;
+    /*background:red;*/
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.smallBoll{
+    position:absolute;
+    border-radius:50%;
+    background:black;
+    width:40%;
+    height:40%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    box-shadow:0 0 5px 1px;
+}
+
+.bigBoll{
+    position:absolute;
+    border-radius:50%;
+    background:white;
+    width:75%;
+    height:75%;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    animation:preload 3s ease-in 0s infinite normal;
+}
+
+@keyframes preload{
+    0%{
+        top:50%;
+        left:50%;
+        width:75%;
+        height:75%;
+    }
+    10%{
+        top:50%;
+        left:50%;
+        width:0%;
+        height:0%;
+    }
+    20%{
+        top:25%;
+        left:75%;
+        width:50%;
+        height:50%;
+    }
+    30%{
+        top:50%;
+        left:50%;
+        width:0%;
+        height:0%;
+    }
+    40%{
+        top:75%;
+        left:75%;
+        width:50%;
+        height:50%;
+    }
+    50%{
+        top:50%;
+        left:50%;
+        width:0%;
+        height:0%;
+    }
+    60%{
+        top:75%;
+        left:25%;
+        width:50%;
+        height:50%;
+    }
+    70%{
+        top:50%;
+        left:50%;
+        width:0%;
+        height:0%;
+    }
+    80%{
+        top:25%;
+        left:25%;
+        width:50%;
+        height:50%;
+    }
+    90%{
+        top:50%;
+        left:50%;
+        width:0%;
+        height:0%;
+    }
+    100%{
+        top:50%;
+        left:50%;
+        width:75%;
+        width:75%;
+        height:75%;
+    }
+}

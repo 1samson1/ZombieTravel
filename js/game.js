@@ -1,4 +1,8 @@
 let canvas = document.getElementById("game");
+let title = document.getElementById("title-panel");
+let hp = document.getElementById("info-hp");
+let xp = document.getElementById("info-xp");
+let time = document.getElementById("info-time");
 let ctx = canvas.getContext("2d");
 
 
@@ -16,8 +20,8 @@ let selectNPC = "Zombie";
 let Game = {
     border:0,
     borderFrontGroung: 0,
-    borderNPCState:1280,
-    borderNotNPCState:853,    
+    borderNPCState:1580,
+    borderNotNPCState:856,    
     start:false,
     distance:0,
     toggleZone:false,
@@ -27,6 +31,7 @@ let Game = {
     path:0,
     maxPoint:2000,
     over:false,
+    stop:false,
     victory:false,
     endGame:false,
     laverOver:"You lose!",
@@ -74,16 +79,12 @@ let Objects = {
     hp: new Image(),
     clock: new Image(),
     score: new Image(),
-    panel:new Image(),
-    bugle: new Image(),
-    Rbugle: new Image(),
+    panel:new Image(),      
     home: new Image(),
     replay: new Image(),
 }
 
 Objects.hp.src = "img/hp.png";
-Objects.bugle.src = "img/bugle.png";
-Objects.Rbugle.src = "img/Rbugle.png";
 Objects.home.src = "img/home.png";
 Objects.replay.src = "img/replay.png";
 Objects.clock.src = "img/clock.png";
@@ -101,14 +102,14 @@ let Player = {
     onPlatform:false,
     width:192,
     height:256,
-    speedJump:15,
+    speedJump:20,
     jumplenght:200,      
     delayJump:150, 
     fixbottom: 360,
     bottom:360,
     yPosImg: 0,
     xPosImg: 0,
-    speed:3,
+    speed:6,
     heal:5,
     hp:100,
     score:0,
@@ -144,11 +145,11 @@ let NPC = {
     height:256,
     yPosImg: 0,
     xPosImg: 0,
-    speed:1,
-    kspeed:0.3,
+    speed:2,
+    kspeed:0.4,
     x: 900 - 256,
     y: 360,
-    counterFrame: 0,
+    counterFrame: 0,    
     kill(Item1,Item2){
         return (((Item2.x+13) <= (Item1.x+13) && (Item2.x + Item2.width-30) >= (Item1.x+13)) || (Item2.x+13 <= (Item1.x + Item1.width-30) && (Item2.x + Item2.width-30) >= (Item1.x + Item1.width-30))) && ((Item1.y + Item1.height) >= Item2.y+23 && (Item1.y + Item1.height) <= Item2.y+23 + Player.speedJump)
     },
@@ -190,20 +191,18 @@ let minutes = 0;
 let fixsec;
 
 function startTime(){
-    if(!Game.over){
+    if(!Game.over && !Game.stop){
         seconds++;
         if(seconds >= 60){
             seconds = 0;
             minutes++;
-        }
-        //console.log("Time: " + minutes + " Minutes " + seconds + " Seconds" );
-        setTimeout(startTime,1000);
+        }    
     }
+    setTimeout(startTime,1000);
 };
 
 function startGame(){
-    startTime();
-    animationNPC();
+    startTime();    
     Sound.theme.play();      
 }
 
@@ -291,65 +290,68 @@ function drawScore() {
 
 function gameover() {
     //Конец игры
-    window.removeEventListener("keydown", keydown);
-    window.removeEventListener("keyup", keyup);
-    Sound.NPC.pause();
+    Game.endGame = true;    
     Sound.battle.pause();
-    Sound.theme.pause();
-    Platform.enebled = false;
-    NPC.alive = false;
-    if(!Game.endGame){    
-        if(Game.victory){
-            Sound.victory.play();
-        }
-        else{
-            Sound.lose.play();
-        }
-        Game.endGame = true;
-        canvas.addEventListener("mousedown",mouseDown);
-    }
-    ctx.fillStyle = "#560abd";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    Sound.theme.pause();        
     if(Game.victory){
-        ctx.drawImage(Objects.bugle,0,160,300,300);
-        ctx.drawImage(Objects.Rbugle,1280-300,160,300,300);
+        Sound.victory.play();
+        endPause('win');
     }
-    ctx.drawImage(Objects.home,590,600);
-    ctx.drawImage(Objects.replay,590,480);
-    ctx.font = "bold 60px Calibri";
-    ctx.textBaseline = "top";
-    ctx.textAlign = "center";
-    ctx.fillStyle = "white";
-    ctx.fillText(Game.laverOver, 640, 100);
-    ctx.textAlign = "start";
-    ctx.drawImage(Objects.hp,550,200,40,40);
-    ctx.fillText(Math.round(Player.hp), 640, 196); 
-    ctx.drawImage(Objects.score,550,250,40,40);
-    ctx.fillText(Player.score, 640, 246);
-    ctx.drawImage(Objects.clock,550,300,40,40);  
-    ctx.fillText(minutes + ":" + fixsec, 640, 296);     
+    else{
+        Sound.lose.play();
+        endPause('lose');
+    }    
 }
 
-function mouseDown(e) {
-    console.log(e.offsetX + "   " + e.offsetY);
-    console.log(e);
-    if((590 <= e.offsetX && 690 >= e.offsetX) && (600 <= e.offsetY && 700 >= e.offsetY)){
-        //home
-        console.log("Go to home!");
-        document.location.href = "index.html";
+function endPause(pause) {
+    Game.stop = true;   
+    Sound.NPC.pause();
+    Controler.left = false;
+    Controler.right = false;
+    Controler.jump = false;
+    switch (pause) {
+        case 'lose':
+            title.innerHTML = "You Lose!";
+            $(".continue").remove();
+            break;
+        
+        case 'win':
+            title.innerHTML = "You Win!";    
+            $(".continue").remove();        
+            break;
+            
+        case 'pause':
+            title.innerHTML = "Pause";
+            break;        
     }
-    if((590 <= e.offsetX && 690 >= e.offsetX) && (480 <= e.offsetY && 580 >= e.offsetY)){
-        //replay
-        console.log("Replay");
-        window.location.reload();
-    }
+    $('#bg-end-pause').fadeIn(1000);
+    hp.innerHTML = Math.round(Player.hp);
+    xp.innerHTML = Player.score;
+    time.innerHTML = minutes + ":" + fixsec;
+}
+
+function continueGame() {      
+    $('#bg-end-pause').fadeOut(1000);
+    Game.stop = false;
+    animationNPC(); 
+    Sound.NPC.pause(); 
+}
+
+function toHome(){
+    document.location.href = "index.html";
+}
+
+function replay(){    
+    window.location.reload();
 }
 
 function draw(){
-    move();
-    moveGround();
-    if(!Game.over && NPC.aLive){
-        IiNPC(Player,NPC);
+    if(!Game.stop){
+        move();
+        moveGround();
+        if(!Game.over && NPC.aLive){
+            IiNPC(Player,NPC);
+        }
     }
     watcher();
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -375,11 +377,9 @@ function draw(){
     drawScore();
     drawTime();  
     
-    if(Game.over){
+    if(Game.over && !Game.endGame){
         gameover();
-    }
-
-    requestAnimationFrame(draw);
+    }    
 }
 
 function keydown(e){       
@@ -388,32 +388,38 @@ function keydown(e){
         Game.start = true;
     }
     switch (e.keyCode) {
+        case 80:        // Press 'P' to pause    
+            Game.stop?continueGame():endPause('pause');
+            break;
         case 32:
         case 38:
-            Controler.jump = true;         
+            if(!Game.stop){    
+                Controler.jump = true;         
+            }
             break;
     
-        case 77:
-            Sound.theme.pause();       
-            break;
-
         case 65:
-        case 37:                    
-            Controler.left = true;
-            Player.toggleImage.src =  Player.img2.src; 
-            if(!animationOn){
-                animation();
-            }            
+        case 37: 
+            if(!Game.stop){
+                Controler.left = true;
+                Player.toggleImage.src =  Player.img2.src; 
+                if(!animationOn){
+                    animation();
+                }   
+            }   
             break;
 
         case 68:
-        case 39:                         
-            Controler.right = true;
-            Player.toggleImage.src =  Player.img.src; 
-            if(!animationOn){
-                animation();
-            }            
+        case 39:    
+            if(!Game.stop){                     
+                Controler.right = true;
+                Player.toggleImage.src =  Player.img.src; 
+                if(!animationOn){
+                    animation();
+                }      
+            }      
             break;
+
 
         default:            
             console.log(e.keyCode);  
@@ -498,17 +504,15 @@ function move(){
     }
 }
 
-function animation() {  
-    
-    if(!Game.over && (Controler.right || Controler.left) && !Player.jumping){
+function animation() {      
+    if(!Game.stop && (Controler.right || Controler.left) && !Player.jumping){
         Player.yPosImg = Player.height * 4;
         Player.xPosImg = Player.width * Player.counterFrame;        
         animationOn = true;
         Player.counterFrame++
         if(Player.counterFrame>7){
             Player.counterFrame = 0;
-        }
-        //console.log(Game.distance);  
+        }        
         Sound.footstep.play();
         setTimeout(animation,100);            
     }
@@ -521,7 +525,7 @@ function animation() {
 }
 
 function animationNPC() {  
-    if(!Game.over && NPC.aLive){
+    if(!Game.over && NPC.aLive && !Game.stop){
         NPC.yPosImg = NPC.height * 4;
         NPC.xPosImg = NPC.width * NPC.counterFrame;    
         NPC.counterFrame++;
@@ -534,25 +538,25 @@ function animationNPC() {
 }
 
 function IiNPC(Item1,Item2) {
-    if(Item1.jumping || Player.onPlatform || Player.onJumpTop)
+    if(Item1.jumping || Item1.onPlatform || Item1.onJumpTop)
     {
-        if(Item1.x > Item2.x && Item2.x > 0){
+        if(Item1.x > Item2.x && Item2.x > -300){
             Item2.x -= Item2.speed/2;
-            NPC.toggleImage.src =  NPC.img2.src;
+            Item2.toggleImage.src =  Item2.img2.src;
         }
         else if(Item1.x < Item2.x && Item2.x < Game.borderNPCState - 256){
             Item2.x += Item2.speed/2;
-            NPC.toggleImage.src =  NPC.img.src;
+            Item2.toggleImage.src =  Item2.img.src;
         }
     }
     else{
         if(Item1.x > Item2.x){
             Item2.x += Item2.speed;
-            NPC.toggleImage.src =  NPC.img.src;
+            Item2.toggleImage.src =  Item2.img.src;
         }
         else{
             Item2.x -= Item2.speed;
-            NPC.toggleImage.src =  NPC.img2.src;
+            Item2.toggleImage.src =  Item2.img2.src;
         }
     }
 }
@@ -638,8 +642,9 @@ function keyup(e){
 
 window.onload = function () {
     preloader();  
-    draw();
-    requestAnimationFrame(draw);   
+    setInterval(()=>{
+        requestAnimationFrame(draw);  
+    },1000/60);    //60FPS 
     this.addEventListener("keydown",keydown);
     this.addEventListener("keyup",keyup);
 }
