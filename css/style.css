@@ -12,7 +12,7 @@ body{
     padding: 0;
     margin: 0;
     background: #560abd;
-    font-family: Calibri;    
+    font-family: Calibri;
     text-shadow: 0 0 5px #000;
 }
 
@@ -25,7 +25,7 @@ body{
 }
 
 .skins{
-    display: flex;    
+    display: flex;
 }
 
 .skin{
@@ -58,8 +58,8 @@ body{
     text-align: center;
     width: 100%;
     font-weight: bold;
-    font-size: 70px;    
-    margin-bottom:80px;    
+    font-size: 70px;
+    margin-bottom:80px;
     cursor: pointer;
 }
 
@@ -73,7 +73,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 40px;   
+    font-size: 40px;
     width: 200px;
     height: 50px;
     background: rgb(253, 164, 20);
@@ -82,7 +82,7 @@ body{
 }
 
 .play:hover{
-    background: rgb(253, 183, 20);    
+    background: rgb(253, 183, 20);
 }
 
 #select{
@@ -103,7 +103,7 @@ body{
     text-align: center;
 }
 
-.pashalka{
+.surprise{
     display: none;
     background: rgba(0, 0, 0, 0.7);
     position: absolute;
@@ -133,12 +133,12 @@ body{
     display: block;
 }
 
-#game , .content{    
+#game , .content{
     width: auto;
     max-width: 100%;
     max-height: 100%;
     height: auto;
-    
+
 }
 
 #bg-end-pause{
@@ -155,7 +155,7 @@ body{
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);    
+    transform: translateX(-50%);
     width: 320px;
     height: calc(50% + 125px);
 }
@@ -181,7 +181,7 @@ body{
 
 .panel{
     position: absolute;
-    background: url(../img/panel.png) repeat-y;    
+    background: url(../img/panel.png) repeat-y;
     bottom: 0;
     height: 250px;
     width: 100%;
@@ -192,9 +192,9 @@ body{
 }
 
 #title-panel{
-    text-align: center;  
-    font-size: 2em;     
-    line-height: 63px;    
+    text-align: center;
+    font-size: 2em;
+    line-height: 63px;
 }
 
 .info-game{
@@ -206,7 +206,7 @@ body{
 
 .info-game>div{
     width: 160px;
-    height: 50px;    
+    height: 50px;
     background-size:30px;
     background-repeat: no-repeat;
     background-position: 10px center ;
@@ -228,9 +228,9 @@ body{
 
 .controls{
     display: flex;
-    justify-content: space-evenly;   
-    align-items: center; 
-    height: 87px;    
+    justify-content: space-evenly;
+    align-items: center;
+    height: 87px;
 }
 
 .content button{

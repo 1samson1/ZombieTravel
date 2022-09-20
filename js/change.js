@@ -1,36 +1,56 @@
-$(function () {
-    let counter = 0;
+document.addEventListener("DOMContentLoaded", ()=> {
+    const countTap = 27;
+    let counter = countTap;
     let skins = document.getElementsByClassName("img-char");
-    let select = document.createElement("div");
-    select.id = "select";
+    let selectCharacter = null;
 
-    for(let i = 0; i<skins.length;i++){
-        
-        if(skins[i].getAttribute("alt") == localStorage.getItem('Character')){  
-            console.log(skins[i].getAttribute("alt"));
-            skins[i].parentNode.appendChild(select);
-        } 
+    for(let i = 0; i < skins.length; i++){
+
+        if(skins[i].getAttribute("alt") == localStorage.getItem('Character')){
+            selectCharacter = skins[i].parentNode;
+            const select = document.createElement("div");
+            select.id = "select";
+            selectCharacter.appendChild(select);
+        }
+
+        skins[i].parentNode.addEventListener("click", function () {
+            if(selectCharacter){
+                selectCharacter.querySelector("#select").remove();
+            }
+
+            const select = document.createElement("div");
+            select.id = "select";
+            this.appendChild(select);
+
+            selectCharacter = this;
+            localStorage.setItem('Character', this.querySelector("img").getAttribute("alt"));
+        })
     };
-    $(".skin").on("click",function () {
-        $("#select").remove();
-        $(this).append("<div id='select'></div>");
-        let selection = $(this).children().eq(0).attr("alt");
-        localStorage.setItem('Character', selection);
-    });
-    $(".play").on("click",function () {
+
+    document.querySelector(".play").addEventListener("click", () => {
         document.location.href = "game.html";
     });
-    $(".title-game").on("click",function () {
-        if(counter >= 27){
-            $("body").append("<div class='pashalka'>Поздравляю! Вы нашли пасхалку! Нажмите играть и Вы увидете сюрприз.</div>");
-            $("#select").remove();
-            $(".pashalka").fadeIn(3000);
+
+    const surprise = document.createElement("div");
+    surprise.classList.add("surprise");
+    surprise.style.display = "none";
+    surprise.innerText = "Поздравляю! Вы нашли пасхалку! Нажмите играть и Вы увидете сюрприз.";
+    document.body.appendChild(surprise);
+
+    document.querySelector(".title-game").addEventListener("click", () => {
+        counter--;
+        if(counter <= 0){
+            if(selectCharacter){
+                selectCharacter.querySelector("#select").remove();
+            }
+            surprise.style.display = "block";
             setTimeout(()=>{
-                $(".pashalka").fadeOut(3000)
+                surprise.style.display = "none";
             },10000);
             localStorage.setItem('Character', "Zombie");
-            counter = 0;
+            counter = countTap;
         }
-        counter++;
+
+        console.log(counter + " clicks out of " + countTap + " left");
     });
 });

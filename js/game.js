@@ -21,7 +21,7 @@ let Game = {
     border:0,
     borderFrontGroung: 0,
     borderNPCState:1580,
-    borderNotNPCState:856,    
+    borderNotNPCState:856,
     start:false,
     distance:0,
     toggleZone:false,
@@ -35,6 +35,7 @@ let Game = {
     victory:false,
     endGame:false,
     laverOver:"You lose!",
+    fullScreen:false
 }
 
 Game.border = Game.borderNotNPCState;
@@ -55,12 +56,12 @@ Ground.front.src = "img/Background/front.png";
 let Sound = {
     theme: new Audio("sounds/theme.mp3"),
     battle: new Audio("sounds/epic.mp3"),
-    footstep: new Audio("sounds/footstep03.ogg"),     
-    NPC: new Audio("sounds/footstep03.ogg"), 
-    monsterDying: new Audio("sounds/ZombieDeath1.ogg"),   
-    chew: new Audio("sounds/chew.wav"),  
-    victory: new Audio("sounds/victory.mp3"),   
-    lose: new Audio("sounds/lose.mp3"),    
+    footstep: new Audio("sounds/footstep03.ogg"),
+    NPC: new Audio("sounds/footstep03.ogg"),
+    monsterDying: new Audio("sounds/ZombieDeath1.ogg"),
+    chew: new Audio("sounds/chew.wav"),
+    victory: new Audio("sounds/victory.mp3"),
+    lose: new Audio("sounds/lose.mp3"),
 }
 
 Sound.theme.volume = "0.5";
@@ -79,7 +80,7 @@ let Objects = {
     hp: new Image(),
     clock: new Image(),
     score: new Image(),
-    panel:new Image(),      
+    panel:new Image(),
     home: new Image(),
     replay: new Image(),
 }
@@ -96,15 +97,15 @@ let Player = {
     y: 360,
     img: new Image(),
     img2: new Image(),
-    toggleImage: new Image(),    
+    toggleImage: new Image(),
     jumping:false,
     onJumpTop:false,
     onPlatform:false,
     width:192,
     height:256,
     speedJump:20,
-    jumplenght:200,      
-    delayJump:150, 
+    jumplenght:200,
+    delayJump:150,
     fixbottom: 360,
     bottom:360,
     yPosImg: 0,
@@ -127,7 +128,7 @@ let Platform = {
     width:256,
     height:127,
     enebled:false,
-        
+
     collision(Item1,Item2){
         return  ((Item2.x <= (Item1.x+43) && (Item2.x + Item2.width) >= (Item1.x+43)) || (Item2.x <= (Item1.x + Item1.width-70) && (Item2.x + Item2.width) >= (Item1.x + Item1.width-70))) && ((Item1.y+Item1.height) <= Item2.y+Player.speedJump && (Item1.y+Item1.height) >= Item2.y);
         //Для монстров +13 -30
@@ -149,7 +150,7 @@ let NPC = {
     kspeed:0.4,
     x: 900 - 256,
     y: 360,
-    counterFrame: 0,    
+    counterFrame: 0,
     kill(Item1,Item2){
         return (((Item2.x+13) <= (Item1.x+13) && (Item2.x + Item2.width-30) >= (Item1.x+13)) || (Item2.x+13 <= (Item1.x + Item1.width-30) && (Item2.x + Item2.width-30) >= (Item1.x + Item1.width-30))) && ((Item1.y + Item1.height) >= Item2.y+23 && (Item1.y + Item1.height) <= Item2.y+23 + Player.speedJump)
     },
@@ -196,20 +197,20 @@ function startTime(){
         if(seconds >= 60){
             seconds = 0;
             minutes++;
-        }    
+        }
     }
     setTimeout(startTime,1000);
 };
 
 function startGame(){
-    startTime();    
-    Sound.theme.play();      
+    startTime();
+    Sound.theme.play();
 }
 
-function watcher() {      
+function watcher() {
     if(Game.distance >= Game.distanceBetZone){
         //console.log("Zone done!");
-        Game.blockZone = true;                
+        Game.blockZone = true;
     }
     if(Game.warZone && !NPC.aLive)
     {
@@ -254,13 +255,13 @@ function drawPanel(){
     ctx.drawImage(Objects.clock,canvas.width - 45,5,40,40);
 }
 
-function drawTime() {    
+function drawTime() {
     if(seconds < 10){
         fixsec = "0" + seconds;
     }
     else{
         fixsec = seconds;
-    }   
+    }
     ctx.font = "bold 40px Calibri";
     ctx.textBaseline = "top";
     ctx.textAlign = "end";
@@ -268,19 +269,19 @@ function drawTime() {
     ctx.fillText(minutes + ":" + fixsec, canvas.width-50, 8);
 }
 
-function drawHp() { 
-    /* ctx.fillStyle = "White";    
-    ctx.fillRect(60,5,204,40); */ 
-    /* ctx.fillStyle = "Red";    
-    ctx.fillRect(62,7,Player.hp*2,36);  */ 
+function drawHp() {
+    /* ctx.fillStyle = "White";
+    ctx.fillRect(60,5,204,40); */
+    /* ctx.fillStyle = "Red";
+    ctx.fillRect(62,7,Player.hp*2,36);  */
     ctx.font = "bold 40px Calibri";
     ctx.textBaseline = "top";
     ctx.textAlign = "left";
     ctx.fillStyle = "White";
-    ctx.fillText(Math.round(Player.hp), 60, 8);  
+    ctx.fillText(Math.round(Player.hp), 60, 8);
 }
 
-function drawScore() {    
+function drawScore() {
     ctx.font = "bold 40px Calibri";
     ctx.textBaseline = "top";
     ctx.textAlign = "left";
@@ -290,9 +291,9 @@ function drawScore() {
 
 function gameover() {
     //Конец игры
-    Game.endGame = true;    
+    Game.endGame = true;
     Sound.battle.pause();
-    Sound.theme.pause();        
+    Sound.theme.pause();
     if(Game.victory){
         Sound.victory.play();
         endPause('win');
@@ -300,11 +301,11 @@ function gameover() {
     else{
         Sound.lose.play();
         endPause('lose');
-    }    
+    }
 }
 
 function endPause(pause) {
-    Game.stop = true;   
+    Game.stop = true;
     Sound.NPC.pause();
     Controler.left = false;
     Controler.right = false;
@@ -312,36 +313,36 @@ function endPause(pause) {
     switch (pause) {
         case 'lose':
             title.innerHTML = "You Lose!";
-            $(".continue").remove();
+            document.querySelector(".continue").remove();
             break;
-        
+
         case 'win':
-            title.innerHTML = "You Win!";    
-            $(".continue").remove();        
+            title.innerHTML = "You Win!";
+            document.querySelector(".continue").remove();
             break;
-            
+
         case 'pause':
             title.innerHTML = "Pause";
-            break;        
+            break;
     }
-    $('#bg-end-pause').fadeIn(1000);
+    document.querySelector('#bg-end-pause').style.display = "block";
     hp.innerHTML = Math.round(Player.hp);
     xp.innerHTML = Player.score;
     time.innerHTML = minutes + ":" + fixsec;
 }
 
-function continueGame() {      
-    $('#bg-end-pause').fadeOut(1000);
+function continueGame() {
+    document.querySelector('#bg-end-pause').style.display = "none";
     Game.stop = false;
-    animationNPC(); 
-    Sound.NPC.pause(); 
+    animationNPC();
+    Sound.NPC.pause();
 }
 
 function toHome(){
     document.location.href = "index.html";
 }
 
-function replay(){    
+function replay(){
     window.location.reload();
 }
 
@@ -355,11 +356,11 @@ function draw(){
     }
     watcher();
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    
+
     ctx.drawImage(Ground.back,0,0,canvas.width,canvas.height-100);
     ctx.drawImage(Ground.front,Ground.frontPosX,Ground.frontPosY,Ground.frontWidth,Ground.frontHeight);
     ctx.drawImage(Ground.front,Ground.frontPosX+canvas.width,Ground.frontPosY,Ground.frontWidth,Ground.frontHeight);
-    
+
     if(Platform.enebled){
         ctx.drawImage(Platform.img,Platform.x,Platform.y,Platform.width,Platform.height);
     }
@@ -370,171 +371,178 @@ function draw(){
         ctx.drawImage(NPC.toggleImage,NPC.xPosImg,NPC.yPosImg,NPC.width,NPC.height,NPC.x,NPC.y,NPC.width,NPC.height);
     }
     //ctx.fillRect(Player.x+13,Player.y-Player.jumpHeight+40,Player.width-30,Player.height-40);
-    
+
     ctx.drawImage(Player.toggleImage,Player.xPosImg,Player.yPosImg,Player.width,Player.height,Player.x,Player.y,Player.width,Player.height);
     drawPanel();
     drawHp();
     drawScore();
-    drawTime();  
-    
+    drawTime();
+
     if(Game.over && !Game.endGame){
         gameover();
-    }    
+    }
 }
 
-function keydown(e){       
+function keydown(e){
     if(!Game.start){
         startGame();
         Game.start = true;
     }
     switch (e.keyCode) {
-        case 80:        // Press 'P' to pause    
+        case 80:        // Press 'P' to pause
             Game.stop?continueGame():endPause('pause');
             break;
-        case 32:
-        case 38:
-            if(!Game.stop){    
-                Controler.jump = true;         
+        case 32: // Press space
+        case 38: // Press up arrow
+            if(!Game.stop){
+                Controler.jump = true;
             }
             break;
-    
-        case 65:
-        case 37: 
+
+        case 65: // Press "A"
+        case 37: // Press left arrow
             if(!Game.stop){
                 Controler.left = true;
-                Player.toggleImage.src =  Player.img2.src; 
+                Player.toggleImage.src =  Player.img2.src;
                 if(!animationOn){
                     animation();
-                }   
-            }   
+                }
+            }
             break;
 
-        case 68:
-        case 39:    
-            if(!Game.stop){                     
+        case 68: // Press "D"
+        case 39: // Press right arrow
+            if(!Game.stop){
                 Controler.right = true;
-                Player.toggleImage.src =  Player.img.src; 
+                Player.toggleImage.src =  Player.img.src;
                 if(!animationOn){
                     animation();
-                }      
-            }      
+                }
+            }
             break;
 
-
-        default:            
-            console.log(e.keyCode);  
+        case 70: // Press "F" to full screen
+            if(Game.fullScreen)
+                document.querySelector("body").requestFullscreen();
+            else {
+                document.exitFullscreen();
+            }
+            Game.fullScreen = !Game.fullScreen;
             break;
-    }     
+        default:
+            console.log(e.keyCode);
+            break;
+    }
 }
 
-function move(){   
-    
+function move(){
+
     if(Platform.enebled && Player.onJumpTop && Platform.collision(Player,Platform)){
-        Player.y = Platform.y - Player.height +7;            
+        Player.y = Platform.y - Player.height +7;
         Player.jumping = false;
         Player.xPosImg  = bPosX;
-        Player.yPosImg  = bPosY;         
-        Player.onJumpTop = false;   
-        Player.fixbottom = Player.y; 
+        Player.yPosImg  = bPosY;
+        Player.onJumpTop = false;
+        Player.fixbottom = Player.y;
         Player.onPlatform = true;
         if(!animationOn){
             animation();
-        }              
+        }
     }
     else if(Platform.enebled && !Player.jumping && Player.onPlatform && !Platform.collision(Player,Platform)){
-        Player.onPlatform = false; 
-        Player.onJumpTop = true; 
-    }    
-        
+        Player.onPlatform = false;
+        Player.onJumpTop = true;
+    }
+
     if(Player.onJumpTop && Player.y < Player.bottom)
-    {              
-        Controler.jump = false;   
+    {
+        Controler.jump = false;
         Player.y += Player.speedJump;
         if(NPC.aLive && NPC.kill(Player,NPC)){
             NPC.aLive = false;
             Sound.NPC.pause();
 			if(!Game.over){
-				Sound.monsterDying.play();  
-			}			
-            Player.score += 100;           
+				Sound.monsterDying.play();
+			}
+            Player.score += 100;
         }
         if(Player.y <= Player.bottom && Player.y >= Player.bottom - Player.speedJump)
         {
             Player.onJumpTop = false;
             Player.jumping = false;
             Player.xPosImg  = bPosX;
-            Player.yPosImg  = bPosY; 
-            Sound.footstep.play();   
-            Player.y = Player.bottom;            
-            Player.fixbottom = Player.bottom; 
-            Player.onPlatform = false; 
+            Player.yPosImg  = bPosY;
+            Sound.footstep.play();
+            Player.y = Player.bottom;
+            Player.fixbottom = Player.bottom;
+            Player.onPlatform = false;
             if(!animationOn){
                 animation();
-            }            
-        }          
+            }
+        }
     }
     if(Controler.jump)
     {
         Player.yPosImg = Player.height * 2;
         Player.xPosImg = Player.width * 6;
         Player.jumping = true;
-        Player.y -= Player.speedJump;  
+        Player.y -= Player.speedJump;
         if(Player.y <= Player.fixbottom - Player.jumplenght)
-        {             
+        {
             setTimeout(()=>{
-                Controler.jump = false;   
+                Controler.jump = false;
                 Player.onJumpTop = true;
             },Player.delayJump);
-        }      
-    }    
+        }
+    }
 
     if(NPC.aLive && NPC.collisionDamage(Player,NPC) && Player.hp >= 0){
         Player.hp-=0.5;
     }
 
     if(Controler.left && Player.x >= 0){
-        Player.x -= Player.speed;        
+        Player.x -= Player.speed;
         Game.distance -= Player.speed;
-        Game.path -= Player.speed;      
+        Game.path -= Player.speed;
     }
     if(Controler.right && Player.x <= Game.border){
-        Player.x += Player.speed;  
-        Game.distance += Player.speed; 
-        Game.path += Player.speed;      
+        Player.x += Player.speed;
+        Game.distance += Player.speed;
+        Game.path += Player.speed;
     }
 }
 
-function animation() {      
+function animation() {
     if(!Game.stop && (Controler.right || Controler.left) && !Player.jumping){
         Player.yPosImg = Player.height * 4;
-        Player.xPosImg = Player.width * Player.counterFrame;        
+        Player.xPosImg = Player.width * Player.counterFrame;
         animationOn = true;
         Player.counterFrame++
         if(Player.counterFrame>7){
             Player.counterFrame = 0;
-        }        
+        }
         Sound.footstep.play();
-        setTimeout(animation,100);            
+        setTimeout(animation,100);
     }
-    else{       
-        animationOn = false;           
+    else{
+        animationOn = false;
         Player.xPosImg  = bPosX;
-        Player.yPosImg  = bPosY; 
+        Player.yPosImg  = bPosY;
         Player.counterFrame = 0;
-    }    
+    }
 }
 
-function animationNPC() {  
+function animationNPC() {
     if(!Game.over && NPC.aLive && !Game.stop){
         NPC.yPosImg = NPC.height * 4;
-        NPC.xPosImg = NPC.width * NPC.counterFrame;    
+        NPC.xPosImg = NPC.width * NPC.counterFrame;
         NPC.counterFrame++;
         if( NPC.counterFrame>7){
             NPC.counterFrame = 0;
         }
         Sound.NPC.play();
-        setTimeout(animationNPC,100); 
-    }     
+        setTimeout(animationNPC,100);
+    }
 }
 
 function IiNPC(Item1,Item2) {
@@ -589,8 +597,8 @@ function moveGround() {
                 Game.toggleZone = true;
             }
             Game.distance = -200;
-            Game.borderFrontGroung -= Player.speed;            
-            Game.border -= Player.speed;            
+            Game.borderFrontGroung -= Player.speed;
+            Game.border -= Player.speed;
         }
         if(Game.toggleZone)
         {
@@ -618,33 +626,33 @@ function battle() {
     NPC.aLive = true;
     animationNPC();
     Sound.theme.pause();
-    Sound.battle.play();    
+    Sound.battle.play();
 }
 
-function keyup(e){       
+function keyup(e){
     switch (e.keyCode) {
         case 65:
-        case 37: 
+        case 37:
             Controler.left = false;
-            Sound.footstep.pause(); 
+            Sound.footstep.pause();
             break;
 
         case 68:
         case 39:
             Controler.right = false;
-            Sound.footstep.pause(); 
+            Sound.footstep.pause();
             break;
-    
+
         default:
             break;
     }
 }
 
 window.onload = function () {
-    preloader();  
+    preloader();
     setInterval(()=>{
-        requestAnimationFrame(draw);  
-    },1000/60);    //60FPS 
+        requestAnimationFrame(draw);
+    },1000/60);    //60FPS
     this.addEventListener("keydown",keydown);
     this.addEventListener("keyup",keyup);
 }
@@ -655,8 +663,8 @@ function preloader() {
         if(!preloader.classList.contains('done')){
             preloader.classList.add('done');
 			setTimeout(()=>{
-				document.body.removeChild(preloader);				
-			},1000);			
+				document.body.removeChild(preloader);
+			},1000);
         }
 
     },1000);//минимальное время отображения
